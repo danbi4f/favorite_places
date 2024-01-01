@@ -8,7 +8,7 @@ class PlacesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Place> userPlaces = [];
+    List<Place> userPlaces = [];   // final userPlaces = ref.watch(userPlacesProvider);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -27,7 +27,7 @@ class PlacesScreen extends StatelessWidget {
         ],
         title: const Text('Your Places'),
       ),
-      body: PlaceList(places: userPlaces),
+      body: PlacesList(places: userPlaces),
     );
   }
 }

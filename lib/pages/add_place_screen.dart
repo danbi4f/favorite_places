@@ -8,6 +8,26 @@ class AddPlaceScreen extends StatefulWidget {
 }
 
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
+  final titleController = TextEditingController();
+
+  savePlace() {
+    final String enteredTitle = titleController.text;
+
+    if (enteredTitle.isEmpty) {
+      return;
+    }
+
+    // ref.read(userPlacesProvider.notifier).addPlace(enteredTitle);
+
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,10 +37,11 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(40.0),
+          Padding(
+            padding: const EdgeInsets.all(40.0),
             child: TextField(
-              decoration: InputDecoration(
+              controller: titleController,
+              decoration: const InputDecoration(
                 labelText: 'Title',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
