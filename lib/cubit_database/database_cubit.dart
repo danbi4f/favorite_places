@@ -11,6 +11,8 @@ part 'database_state.dart';
 class DatabaseCubit extends Cubit<DatabaseState> {
   DatabaseCubit() : super(InitDatabaseState());
 
+  Database? database;
+
   Future<Database> getDatabase() async {
     final dbPath = await sql.getDatabasesPath();
 
@@ -22,6 +24,6 @@ class DatabaseCubit extends Cubit<DatabaseState> {
             'CREATE TABLE user_places(id TEXT PRIMARY KEY, title TEXT, image TEXT, lat REAL, lng REAL, address TEXT)');
       },
     );
-    return db;
+    return database = db;
   }
 }

@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:favorite_places/cubit_database/database_cubit.dart';
+import 'package:favorite_places/cubit_place/place_cubit.dart';
 import 'package:favorite_places/data/models/place.dart';
 import 'package:favorite_places/widgets/image_input.dart';
 import 'package:favorite_places/widgets/location_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddPlaceScreen extends StatefulWidget {
   const AddPlaceScreen({super.key});
@@ -16,6 +19,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _titleController = TextEditingController();
   File? _selectedImage;
   PlaceLocation? _selectedLocation;
+  PlaceCubit? placeCubit;
 
   savePlace() {
     final String enteredTitle = _titleController.text;
@@ -23,8 +27,12 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     if (enteredTitle.isEmpty) {
       return;
     }
+    
+      placeCubit!.addPlace(enteredTitle, _selectedImage!, _selectedLocation!);
+    
+    print(placeCubit!.placeRepo.listPlaces);
 
-    // ref.read(userPlacesProvider.notifier).addPlace(enteredTitle);
+    
 
     Navigator.of(context).pop();
   }
@@ -37,6 +45,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
+     placeCubit = PlaceCubit(database: context.read<DatabaseCubit>().database);
     return Scaffold(
       appBar: AppBar(
         title: const Text("add new place"),

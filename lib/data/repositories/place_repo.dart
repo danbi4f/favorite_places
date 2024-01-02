@@ -1,20 +1,20 @@
 import 'dart:io';
 
-import 'package:favorite_places/cubit_database/database_cubit.dart';
 import 'package:favorite_places/data/models/place.dart';
 import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:path/path.dart' as path;
+import 'package:sqflite/sqflite.dart';
 
 class PlaceRepository {
   PlaceRepository();
 
-  List listPlaces = [];
+ List<Place> listPlaces = [];
  
 
-  Future loadPlaces(DatabaseCubit database) async {
-    final db = await database.getDatabase();
+  Future loadPlaces(Database? database) async {
+    final db = database;
 
-    final data = await db.query('user_places');
+    final data = await db!.query('user_places');
 
     final places = data
         .map(
@@ -33,7 +33,7 @@ class PlaceRepository {
     listPlaces = places;
   }
 
-   addPlace(String title, File image, PlaceLocation location, {required DatabaseCubit database}) async {
+   addPlace(String title, File image, PlaceLocation location, {required Database? database}) async {
     final appDir = await syspaths.getApplicationCacheDirectory();
 
     final fileName = path.basename(image.path);
@@ -46,9 +46,9 @@ class PlaceRepository {
       title: title,
     );
 
-    final db = await database.getDatabase();
+    final db =  database;
 
-    db.insert(
+    db!.insert(
       'user_places',
       {
         'id': newPlace.id,
